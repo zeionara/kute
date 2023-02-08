@@ -1,4 +1,8 @@
-# kute
+# kute ⚓
+
+<p align="center">
+    <img src="assets/images/logo.png"/>
+</p>
 
 kute - **ku**bernetes **te**sts - assets for testing and experimenting with kubernetes.
 
