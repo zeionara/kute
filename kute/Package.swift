@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
     name: "kute",
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser", branch: "main")
+        .package(url: "https://github.com/apple/swift-argument-parser", branch: "main"),
+        .package(url: "https://github.com/httpswift/swifter.git", branch: "stable")
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
     ],
@@ -16,7 +17,8 @@ let package = Package(
         .executableTarget(
             name: "kute",
             dependencies: [
-                .product(name: "ArgumentParser", package: "swift-argument-parser")
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .product(name: "Swifter", package: "swifter")
             ]
         ),
         .testTarget(
