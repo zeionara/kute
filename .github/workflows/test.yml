@@ -3,6 +3,7 @@ on:
   - push
 jobs:
   test:
+    runs-on: ubuntu-latest
     steps:
       - run: archive_path=/tmp/swift.tar.gz
 
