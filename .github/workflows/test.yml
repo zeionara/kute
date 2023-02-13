@@ -7,14 +7,19 @@ jobs:
     steps:
       - run: |
           export archive_path=/tmp/swift.tar.gz
+
           wget https://download.swift.org/swift-5.7.3-release/ubuntu2204/swift-5.7.3-RELEASE/swift-5.7.3-RELEASE-ubuntu22.04.tar.gz -O $archive_path
           tar -xzvf $archive_path
           rm $archive_path
+
       - run: |
           export swift_root=/usr/local/swift-5.7.3
+
           sudo mv swift-5.7.3-RELEASE-ubuntu22.04 $swift_root
           echo -e "\nexport PATH=\$PATH:$swift_root/usr/bin" >> ~/.bashrc
+
       - uses: actions/checkout@v3
+
       - run: |
           cd kute
           swift test
