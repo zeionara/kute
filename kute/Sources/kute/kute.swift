@@ -19,33 +19,35 @@ struct Serve: ParsableCommand {
         String.seed = seed
 
         // let dir = try FileManager.default.currentDirectoryPath
+        let prefix: String
+        let suffix: String
 
-        server["/default"] = { (foo: HttpRequest) -> HttpResponse in
+        if let envPrefix = ProcessInfo.processInfo.environment["TOKEN_PREFIX"] {
+            prefix = "\(envPrefix)-"
+        } else {
+            prefix = "" 
+        }
 
-            if let prefix = ProcessInfo.processInfo.environment["TOKEN_PREFIX"] {
-                return .ok(
-                    .json(
-                        [
-                            "date": "\(prefix)-\(Date().token)",
-                            "word": "\(prefix)-\(String.token)",
-                            "uuid": "\(prefix)-\(UUID().uuidString.lowercased())"
-                        ]
-                    )
-                )
-            }
+        if let envSuffix = ProcessInfo.processInfo.environment["TOKEN_SUFFIX"] {
+            suffix = "-\(envSuffix)"
+        } else {
+            suffix = "" 
+        }
 
+        server["/"] = { (foo: HttpRequest) -> HttpResponse in
             return .ok(
                 .json(
                     [
-                        "date": Date().token,
-                        "word": String.token,
-                        "uuid": UUID().uuidString.lowercased()
+                        "date": "\(prefix)\(Date().token)\(suffix)",
+                        "word": "\(prefix)\(String.token)\(suffix)",
+                        "uuid": "\(prefix)\(UUID().uuidString.lowercased())\(suffix)"
                     ]
                 )
             )
         }
 
-        print("Started kute server on port \(port)...")
+        print("Started kute server on port \(port)")
+        print("Try running the following command:\n\ncurl localhost:\(port)")
 
         try server.start(port)
 
