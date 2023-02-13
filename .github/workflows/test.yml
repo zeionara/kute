@@ -27,10 +27,13 @@ jobs:
         run: |
           cd kute
           swift test
+          ls -alh .
 
       - name: Print current dirs
         run: |
+          swift build
           pwd
+          ls -alh
           ls ./.build
           ls ./.build/debug
           ./.build/debug/kute
