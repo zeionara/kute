@@ -41,4 +41,7 @@ jobs:
 
       - name: Build container
         run: |
-          docker build . --tag kute:latest
+          ls -alh
+          pwd
+          cd kute
+          docker build . --tag zeio/kute:latest
