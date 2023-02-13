@@ -31,11 +31,11 @@ jobs:
 
       - name: Print current dirs
         run: |
-          ./kute/.build/debug/kute
+          cp ./kute/.build/debug/kute ./exec
 
       - name: Save executable
         uses: actions/upload-artifact@v3
         with:
           name: executable
-          path: ./kute/.build/debug/kute
+          path: exec
           retention-days: 5
