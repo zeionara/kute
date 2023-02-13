@@ -31,8 +31,9 @@ jobs:
 
       - name: Print current dirs
         run: |
-          swift build
           pwd
+          ls -alh
+          swift build
           ls -alh
           ls ./.build
           ls ./.build/debug
