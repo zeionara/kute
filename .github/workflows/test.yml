@@ -27,15 +27,14 @@ jobs:
         run: |
           cd kute
           swift test
-          ls -alh .
 
-      - name: Print current dirs
+      - name: Copy executable closer to the root
         run: |
           cp ./kute/.build/debug/kute ./exec
 
       - name: Save executable
         uses: actions/upload-artifact@v3
         with:
-          name: executable
+          name: kute
           path: exec
           retention-days: 5
