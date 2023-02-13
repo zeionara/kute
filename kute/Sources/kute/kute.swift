@@ -13,11 +13,15 @@ struct Serve: ParsableCommand {
     @Option(name: .shortAndLong, help: "Seed for generating randomized tokens")
     var seed: Int?
 
+    @Flag(name: .shortAndLong, help: "Do not read content of registry from the snapshot file")
+    var bare: Bool = false
+
     mutating func run() throws {
         let server = HttpServer()
 
         String.seed = seed
-        var registry = TokenRegistry()
+
+        var registry = bare ? TokenRegistry() : try! TokenRegistry.load(from: URL.registrySnapshot)
 
         // let dir = try FileManager.default.currentDirectoryPath
         let prefix: String
@@ -90,6 +94,14 @@ struct Serve: ParsableCommand {
             }
 
             return .badRequest(nil)
+        }
+
+        server["dump"] = { (request: HttpRequest) -> HttpResponse in
+            return .ok(
+                try! .data(
+                    encoder.encode(registry)
+                )
+            )
         }
 
         print("Started kute server on port \(port)")

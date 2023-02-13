@@ -2,7 +2,7 @@ import Foundation
 
 
 public extension String {
-    static let tokenLength: Int = 3
+    static let tokenLength: Int = 2
     static let commonSyllables = try! String(contentsOf: URL.commonSyllables).components(separatedBy: "\n")
 
     private static var seedValue: Int?

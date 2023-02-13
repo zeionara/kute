@@ -42,7 +42,7 @@ struct TokensResponse: Codable {
     var items: [[String: String]]? = nil
 }
 
-class TokenRegistry {
+class TokenRegistry: Codable {
 
     private static let undefined = "undefined"
 
@@ -66,14 +66,22 @@ class TokenRegistry {
 
         if var uuids = wordToUuids[token.word] {
             uuids.append(token.uuid)
+            wordToUuids[token.word] = uuids
         } else {
             wordToUuids[token.word] = [token.uuid]
         }
 
         if var uuids = dateToUuids[token.date] {
             uuids.append(token.uuid)
+            dateToUuids[token.date] = uuids
         } else {
             dateToUuids[token.date] = [token.uuid]
+        }
+
+        do {
+            try save(as: URL.registrySnapshot)
+        } catch {
+            print("Cannot save registry snapshot as {URL.registrySnapshot}")
         }
     }
 
@@ -104,5 +112,19 @@ class TokenRegistry {
         }
 
         return nil
+    }
+
+    func save(as path: URL) throws {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+
+        let data = try encoder.encode(self)
+        try String(data: data, encoding: .utf8)!.write(to: path, atomically: false, encoding: .utf8)
+    }
+
+    static func load(from path: URL) throws -> Self {
+        let decoder = JSONDecoder()
+
+        return try decoder.decode(Self.self, from: Data(contentsOf: path))
     }
 }
