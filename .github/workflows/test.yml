@@ -40,8 +40,10 @@ jobs:
       #     retention-days: 5
 
       - name: Build container
+        env:
+          DOCKERHUB_ACCESS_TOKEN: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
         run: |
-          ls -alh
-          pwd
           cd kute
           docker build . --tag zeio/kute:latest
+          docker login -u zeio -p $DOCKERHUB_ACCESS_TOKEN
+          docker push zeio/kute:latest
