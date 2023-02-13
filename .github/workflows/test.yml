@@ -20,8 +20,8 @@ jobs:
       #     sudo mv swift-5.7.3-RELEASE-ubuntu22.04 $swift_root
       #     echo -e "\nexport PATH=\$PATH:$swift_root/usr/bin" >> ~/.bashrc
 
-      # - name: Checkout repo 
-      #   uses: actions/checkout@v3
+      - name: Checkout repo 
+        uses: actions/checkout@v3
 
       # - name: Run tests 
       #   run: |
