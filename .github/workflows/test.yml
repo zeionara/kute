@@ -5,18 +5,20 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: export archive_path=/tmp/swift.tar.gz
+      - run: |
+        export archive_path=/tmp/swift.tar.gz
 
-      - run: wget https://download.swift.org/swift-5.7.3-release/ubuntu2204/swift-5.7.3-RELEASE/swift-5.7.3-RELEASE-ubuntu22.04.tar.gz -O $archive_path
-      - run: tar -xzvf $archive_path
-      - run: rm $archive_path
+        wget https://download.swift.org/swift-5.7.3-release/ubuntu2204/swift-5.7.3-RELEASE/swift-5.7.3-RELEASE-ubuntu22.04.tar.gz -O $archive_path
+        tar -xzvf $archive_path
+        rm $archive_path
 
-      - run: export swift_root=/usr/local/swift-5.7.3
+      - run: |
+        export swift_root=/usr/local/swift-5.7.3
 
-      - run: sudo mv swift-5.7.3-RELEASE-ubuntu22.04 $swift_root
-      - run: echo -e "\nexport PATH=\$PATH:$swift_root/usr/bin" >> ~/.bashrc
-      - run: . ~/.bashrc
+        sudo mv swift-5.7.3-RELEASE-ubuntu22.04 $swift_root
+        echo -e "\nexport PATH=\$PATH:$swift_root/usr/bin" >> ~/.bashrc
 
       - uses: actions/checkout@v3
-      - run: cd kute
-      - run: swift test
+      - run: |
+        cd kute
+        swift test
