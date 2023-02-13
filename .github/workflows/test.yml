@@ -31,14 +31,7 @@ jobs:
 
       - name: Print current dirs
         run: |
-          cd kute
-          pwd
-          ls -alh
-          swift build
-          ls -alh
-          ls ./.build
-          ls ./.build/debug
-          ./.build/debug/kute
+          ./kute/.build/debug/kute
 
       - name: Save executable
         uses: actions/upload-artifact@v3
