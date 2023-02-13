@@ -10,8 +10,13 @@ struct Serve: ParsableCommand {
     @Option(name: .shortAndLong, help: "Check interval")
     var checkInterval: UInt32 = 10  // how many seconds to wait before making sure that the server is still running
 
+    @Option(name: .shortAndLong, help: "Seed for generating randomized tokens")
+    var seed: Int?
+
     mutating func run() throws {
         let server = HttpServer()
+
+        String.seed = seed
 
         // let dir = try FileManager.default.currentDirectoryPath
 
