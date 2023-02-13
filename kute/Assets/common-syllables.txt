@@ -161,12 +161,11 @@ my
 nal
 ness
 ning
-n't
+nt
 nu
 oc
 pres
 sup
-te
 ted
 tem
 tin
@@ -235,6 +234,7 @@ play
 ples
 ply
 port
+ku
 press
 sat
 sec
@@ -298,6 +298,7 @@ ral
 rect
 ried
 round
+te
 row
 sa
 sand

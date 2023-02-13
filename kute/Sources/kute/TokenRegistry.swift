@@ -86,7 +86,7 @@ class TokenRegistry: Codable {
     }
 
     func get(word: String) -> [Token]? {
-        print(wordToUuids)
+        // print(wordToUuids)
         if let uuids = wordToUuids[word] {
             return uuids.map{ uuid in
                 Token(

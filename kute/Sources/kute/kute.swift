@@ -18,10 +18,15 @@ struct Serve: ParsableCommand {
 
     mutating func run() throws {
         let server = HttpServer()
+        var registry: TokenRegistry
 
         String.seed = seed
 
-        var registry = bare ? TokenRegistry() : try! TokenRegistry.load(from: URL.registrySnapshot)
+        do { 
+            registry = bare ? TokenRegistry() : try TokenRegistry.load(from: URL.registrySnapshot)
+        } catch {
+            registry = TokenRegistry()
+        }
 
         // let dir = try FileManager.default.currentDirectoryPath
         let prefix: String
