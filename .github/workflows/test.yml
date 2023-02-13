@@ -37,5 +37,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: executable
-          path: ./.build/debug/kute
+          path: ./kute/.build/debug/kute
           retention-days: 5
