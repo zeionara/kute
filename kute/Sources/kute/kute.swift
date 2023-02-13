@@ -17,6 +17,7 @@ struct Serve: ParsableCommand {
         let server = HttpServer()
 
         String.seed = seed
+        var registry = TokenRegistry()
 
         // let dir = try FileManager.default.currentDirectoryPath
         let prefix: String
@@ -37,13 +38,58 @@ struct Serve: ParsableCommand {
         server["/"] = { (foo: HttpRequest) -> HttpResponse in
             return .ok(
                 .json(
-                    [
-                        "date": "\(prefix)\(Date().token)\(suffix)",
-                        "word": "\(prefix)\(String.token)\(suffix)",
-                        "uuid": "\(prefix)\(UUID().uuidString.lowercased())\(suffix)"
-                    ]
+                    Token(in: &registry).asDict(prefix: prefix, suffix: suffix)
                 )
             )
+        }
+
+        let decoder = JSONDecoder()
+        let encoder = JSONEncoder()
+
+        server["/find"] = { (foo: HttpRequest) -> HttpResponse in
+            // print(foo.body)
+
+            if let request = try? decoder.decode(WordRequest.self, from: Data(foo.body)) {
+                let response: TokensResponse
+
+                if let tokens = registry.get(word: String(request.word.dropFirst(prefix.count).dropLast(suffix.count))) {
+                    response = TokensResponse(
+                        found: true,
+                        items: tokens.map{ token in
+                            token.asDict(prefix: prefix, suffix: suffix)
+                        }
+                    )
+                } else {
+                    response = TokensResponse(
+                        found: false
+                    )
+                }
+
+                return .ok(
+                    try! .data(encoder.encode(response))
+                )
+            } else if let request = try? decoder.decode(DateRequest.self, from: Data(foo.body)) {
+                let response: TokensResponse
+
+                if let tokens = registry.get(date: String(request.date.dropFirst(prefix.count).dropLast(suffix.count))) {
+                    response = TokensResponse(
+                        found: true,
+                        items: tokens.map{ token in
+                            token.asDict(prefix: prefix, suffix: suffix)
+                        }
+                    )
+                } else {
+                    response = TokensResponse(
+                        found: false
+                    )
+                }
+
+                return .ok(
+                    try! .data(encoder.encode(response))
+                )
+            }
+
+            return .badRequest(nil)
         }
 
         print("Started kute server on port \(port)")
