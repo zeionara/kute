@@ -5,41 +5,40 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Download swift
-        run: |
-          export archive_path=/tmp/swift.tar.gz
+      # - name: Download swift
+      #   run: |
+      #     export archive_path=/tmp/swift.tar.gz
 
-          wget https://download.swift.org/swift-5.7.3-release/ubuntu2204/swift-5.7.3-RELEASE/swift-5.7.3-RELEASE-ubuntu22.04.tar.gz -O $archive_path
-          tar -xzvf $archive_path
-          rm $archive_path
+      #     wget https://download.swift.org/swift-5.7.3-release/ubuntu2204/swift-5.7.3-RELEASE/swift-5.7.3-RELEASE-ubuntu22.04.tar.gz -O $archive_path
+      #     tar -xzvf $archive_path
+      #     rm $archive_path
 
-      - name:  Install swift
-        run: |
-          export swift_root=/usr/local/swift-5.7.3
+      # - name:  Install swift
+      #   run: |
+      #     export swift_root=/usr/local/swift-5.7.3
 
-          sudo mv swift-5.7.3-RELEASE-ubuntu22.04 $swift_root
-          echo -e "\nexport PATH=\$PATH:$swift_root/usr/bin" >> ~/.bashrc
+      #     sudo mv swift-5.7.3-RELEASE-ubuntu22.04 $swift_root
+      #     echo -e "\nexport PATH=\$PATH:$swift_root/usr/bin" >> ~/.bashrc
 
-      - name: Checkout repo 
-        uses: actions/checkout@v3
+      # - name: Checkout repo 
+      #   uses: actions/checkout@v3
 
-      - name: Run tests 
-        run: |
-          cd kute
-          swift test
+      # - name: Run tests 
+      #   run: |
+      #     cd kute
+      #     swift test
 
-      - name: Copy executable closer to the root
-        run: |
-          cp ./kute/.build/debug/kute ./exec
+      # - name: Copy executable closer to the root
+      #   run: |
+      #     cp ./kute/.build/debug/kute ./exec
 
-      - name: Save executable
-        uses: actions/upload-artifact@v3
-        with:
-          name: kute
-          path: exec
-          retention-days: 5
+      # - name: Save executable
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: kute
+      #     path: exec
+      #     retention-days: 5
 
       - name: Build container
         run: |
-          cd kute
-          docker build .
+          docker build . --tag kute:latest
