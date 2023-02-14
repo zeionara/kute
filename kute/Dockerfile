@@ -4,7 +4,14 @@ RUN git clone https://github.com/zeionara/kute.git
 
 RUN cd /kute/kute && swift build
 
-ENV PORT=8080
-ENV SEED=17
+ENV PORT=
+ENV SEED=
+ENV BARE=
 
-ENTRYPOINT cd /kute/kute && swift run kute serve --port $PORT --seed $SEED
+ENTRYPOINT [ \
+    "bash", "-c", \
+    "cd /kute/kute && swift run kute serve \
+    $(if [[ -z $PORT ]]; then echo ''; else echo '--port '$PORT; fi) \
+    $(if [[ -z $SEED ]]; then echo ''; else echo '--seed '$SEED; fi) \
+    $(if [[ -z $BARE ]]; then echo ''; else echo '--bare'; fi)" \
+]
